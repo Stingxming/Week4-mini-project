@@ -24,8 +24,8 @@
     var gameResultEl = document.querySelector(".gameboard__result");
     var gameDisplayEl = document.querySelector("gameboard__display");
     var controlsEl = document.querySelector(".controls");
-    var currentWordIndex;
-    var currentGuess;
+    var currentWordIndex[];
+    var currentGuess[];
     /*
      3. Declare variables: state (things we need to keep track of)
         - What are the datq that need to be kept track of? 
@@ -60,6 +60,7 @@
     ];
     
     var kDuration =20;
+    var kStorageKey = "week-4-activity-28-scores";
     /*
      5. Identify events
         - Based on the variables created in Step 2, create event handlers
@@ -82,19 +83,65 @@
     
     function init() {
       console.log("Game Loading...");
+
+      // retrieve data from persistance
+      var scores = JSON.parse(localStorage.getItem(kStorageKey));
+
+      // update state
+      if (scores) {
+        wins = scores.wins;
+        losses = scores.losses;
+      }
+
+      // update the ui
+        updateScoreBoard();   
     }
+
     // event: click start
     
     function handleCkickStart(ev) {
       console.log("Game Started!");
       startGameButtonEl.addEventListener("click, handleClickStart");
-    }
     
+    
+    if (!timer) {
+        timeLeft = kDuration;
+        timer = setInterval(handleTimerTick, 1000);
+        currentWordIndex = Math.floor(Math.random() * kWordList.length);
+        currentGuess = new Array(kWordList[currentWordIndex].length).fill("_");
+        hideElement(controlsEl);
+        hideElement(gameResultEl);
+        showElement(timerEl);
+        showElement(gameBoardEl);
+    }
+
+    //choose a word from the list
+
+    // set time left
+
+    // set current guess
+
+    // hide the start button
+
+    // reset the display
+
+    // hide any result message 
+
+    // show timer
+
+    // show gameboard
+
+    }
     
     // event: timer tick
     
     function handleTimerTick(ev) {
-      console.log("timer ticked!");
+      console.log("timer ticked!", timeLeft);
+      timer--;
+      timerEl.textContent = timeLeft;
+      if(timeLeft === 0) {
+        handleGameEnds(false);
+      }
     }
     
     // event: type letter
@@ -103,17 +150,52 @@
       console.log("key pressed: ", ev.key);
     }
     document.addEventListener("keydown", handleKeydown);
+    
     // event: game ends
     
-    function handleGameEnds() {
-    
+    function handleGameEnds(didWin) {
+    clearInterval(timer);
+    timer = null;
+
+        // update state
+
+    if (didWin) {
+        wins++;
+    } else {
+        losses++;
+    }
+
+    localStorage.setItem(kStorageKey, JSON.stringify({wins, losses }));
+
+    // update ui
+
+    // display results
+
+    updateScoreBoard();
+    showElement(controlsEl);
+
     }
     
     /*
-     6. Refactor
+     6. Refactor (Helper Functions)
         - identify tasks that can be broken into their own functions, outside the event handlers
         - Are there tasks that more than one event handler share?
     */
     
+        function updateScoreBoard() {
+            // update ui
+            winsEl.textContent = wins;
+            lossesEL.textContent = losses;
+        }
+
+        function hideElement(el) {
+            el.classList.add("hide");
+        }
+
+        function showElement(el) {
+            el.classList.remove("hide");
+        }
     
-    
+    // start the game 
+
+    init();
