@@ -1,3 +1,22 @@
+.root {
+    --color-primary-bg: white;
+    --color-primary-fg: grey;
+    --color-success-bg: green;
+    --color-success-fg: yellow;
+    --color-failure-bg: pink;
+    --color-failure-fg: red;
+}
+
 .hide {
     display: none !important;
+}
+
+.success {
+    background-color: var(--color-success-bg);
+    color: var(--color-success-fg);
+}
+
+.failure {
+    background-color: var(--color-failure-bg);
+    color: var(--color-failure-fg);
 }

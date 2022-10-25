@@ -24,8 +24,8 @@
     var gameResultEl = document.querySelector(".gameboard__result");
     var gameDisplayEl = document.querySelector("gameboard__display");
     var controlsEl = document.querySelector(".controls");
-    var currentWordIndex[];
-    var currentGuess[];
+    var currentWordIndex;
+    var currentGuess;
     /*
      3. Declare variables: state (things we need to keep track of)
         - What are the datq that need to be kept track of? 
@@ -170,7 +170,7 @@
     // update ui
 
     // display results
-
+    displayResult(didWin);
     updateScoreBoard();
     showElement(controlsEl);
 
@@ -194,6 +194,22 @@
 
         function showElement(el) {
             el.classList.remove("hide");
+        }
+
+        function displayResult(didWin) {
+            hideElement(timerEl);
+
+            gameResultEl.classList.remove("success");
+            gameResultEl.classList.remove("failure");
+
+            if(didWin) {
+                gameResultEl.textContent ="YOU WIN!";
+                gameResultEl.classList.add("success");
+            } else {
+                gameResultEl.textContent ="YOU LOSE!";
+                gameResultEl.classList.add("failure");
+            }
+            showElement(gameResultEl);
         }
     
     // start the game 
